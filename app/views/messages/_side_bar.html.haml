@@ -4,17 +4,19 @@
       %p.Side_bar__user-name__top-box--name
         = current_user.name
       %ul.Side_bar__user-name__top-box--icons 
-        = link_to "#", class: "Side_bar__user-name__top-box--icons" do
+        = link_to new_group_path, class: "Side_bar__user-name__top-box--icons" do
           = icon('far', 'edit' )
         = link_to edit_user_path(current_user), class: "Side_bar__user-name__top-box--icons" do
           = icon('fas', 'cog')  
   
   
   .Side_bar__group-list
-    .Side_bar__group-list__under-box
-      %h1.Side_bar__group-list__under-box--name techcamp 
-      %p.Side_bar__group-list__under-box--message まだメッセージがありません
+    - current_user.groups.each do |group|
+      .Side_bar__group-list__under-box
+        = link_to "#" do   
+          .Side_bar__group-list__under-box--name
+            = group.name
+          .Side_bar__group-list__under-box--message
+            メッセージはまだありません
 
-    .Side_bar__group-list__under-box
-      %h1.Side_bar__group-list__under-box--name teamC
-      %p.Side_bar__group-list__under-box--message まだメッセージがありません  
+      
