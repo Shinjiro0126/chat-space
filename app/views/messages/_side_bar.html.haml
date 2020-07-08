@@ -1,11 +1,12 @@
 .Side_bar
   .Side_bar__user-name
     .Side_bar__user-name__top-box
-      %p.Side_bar__user-name__top-box--name  masa
+      %p.Side_bar__user-name__top-box--name
+        = current_user.name
       %ul.Side_bar__user-name__top-box--icons 
         = link_to "#", class: "Side_bar__user-name__top-box--icons" do
           = icon('far', 'edit' )
-        = link_to "#", class: "Side_bar__user-name__top-box--icons" do
+        = link_to edit_user_path(current_user), class: "Side_bar__user-name__top-box--icons" do
           = icon('fas', 'cog')  
   
   
