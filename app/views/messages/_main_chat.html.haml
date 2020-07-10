@@ -1,35 +1,26 @@
 .Main_chat
   .Main_chat__group-info
     .Main_chat__group-info__header-left
-      .Main_chat__group-info__header-left__group-name test
+      .Main_chat__group-info__header-left__group-name
+        = @group.name
       %ul.Main_chat__group-info__header-left__member
-        Member:
-        %li.Main_chat__group-info__header-left__member__list
-          masa
+        Member :
+        - @group.users.each do |user|
+          %li.Main_chat__group-info__header-left__member__list 
+            = user.name
         
-
-    =link_to "#", class: "Main_chat__group-info__header-right" do 
+    = link_to edit_group_path(@group) ,class: "Main_chat__group-info__header-right"  do 
       Edit
      
 
   .Main_chat__message-list
-    %ul.Main_chat__message-list__names-box
-      %li.Main_chat__message-list__names-box--name masa
-      %li.Main_chat__message-list__names-box--date 2019/11/20(Wed) 17:43:01
-    %p.Main_chat__message-list__messages-box おはよう！
-
-    %ul.Main_chat__message-list__names-box
-      %li.Main_chat__message-list__names-box--name humi
-      %li.Main_chat__message-list__names-box--date 2019/11/21(Tur) 17:43:01
-    %p.Main_chat__message-list__messages-box おはようございます
-
-
+    = render @messages       
   .Main_chat__message-form
-    %form.Main_chat__message-form__form-box
+    = form_with model: [@group, @message], class: "Main_chat__message-form__form-box", local: true do |f|
       .Main_chat__message-form__form-box__message-box
-        %input.Main_chat__message-form__form-box__message-box--message{"placeholder": "type a message", "type": "text"}
-        %label{class: "Main_chat__message-form__form-box__message-box--label"}
-          = icon('fas', 'image')
-          %input{type: "file", class: "Main_chat__message-form__form-box__message-box--icon"}
-      %input.Main_chat__message-form__form-box__send-box{"type": "submit", "value": "Send"}
-    
+        = f.text_field :content, class: "Main_chat__message-form__form-box__message-box--message", placeholder: "type a message"
+        = f.label :image, class: "Main_chat__message-form__form-box__message-box--label" do
+          = icon("far", "image")
+        = f.file_field :image, class: "Main_chat__message-form__form-box__message-box--file"
+      = f.submit "Send", class: "Main_chat__message-form__form-box__send-box"    
+        

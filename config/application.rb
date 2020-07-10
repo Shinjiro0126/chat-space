@@ -11,12 +11,12 @@ module ChatSpace
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.0
     config.generators do |g|
-    config.i18n.default_locale = :ja
       g.stylesheets false
       g.javascripts false
       g.helper false
       g.test_framework false
     end  
+    config.i18n.default_locale = :ja
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
