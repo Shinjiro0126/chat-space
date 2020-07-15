@@ -100,6 +100,7 @@
       height: calc(100vh - 190px);
       padding-top: 35px;
       padding-left: 40px;
+      overflow: scroll;
       &__list-box{
         margin-bottom: 46px;
         &__name-box{
