@@ -2,7 +2,7 @@ $(function(){
 
   function buildHTML(message){
     if(message.image){
-      let html = `<div class="Main_chat__message-list__list-box">
+      let html = `<div class="Main_chat__message-list__list-box" data-message-id=${message.id}>
                     <div class="Main_chat__message-list__list-box__name-box">
                       <div class="Main_chat__message-list__list-box__name-box--name">
                         ${message.user_name}
@@ -20,7 +20,7 @@ $(function(){
                   </div>`
       return html;
     } else{
-      let html = `<div class="Main_chat__message-list__list-box">
+      let html = `<div class="Main_chat__message-list__list-box" data-message-id=${message.id}>
                     <div class="Main_chat__message-list__list-box__name-box">
                       <div class="Main_chat__message-list__list-box__name-box--name">
                         ${message.user_name}
@@ -38,29 +38,28 @@ $(function(){
        return html;
     }; 
   }
-
-  $(".Main_chat__message-form__form-box").on('submit', function(e){
-    e.preventDefault()
-    let formData = new FormData(this);
-    let url = $(this).attr('action');
+  
+  let reloadMessages = function() {
+    let last_message_id = $(".Main_chat__message-list__list-box:last").data("message-id") || 0;
     $.ajax({
-      type: "POST",
-      url: url,
-      data: formData,
+      url: "api/messages",
+      type: 'get',
       dataType: 'json',
-      processData: false,
-      contentType: false
+      data: {id: last_message_id}
     })
-    
-    .done(function(data){
-      let html = buildHTML(data);
-      $(".Main_chat__message-list").append(html);
-      $(".Main_chat__message-list").animate({ scrollTop: $(".Main_chat__message-list")[0].scrollHeight});
-      $("form")[0].reset();
-      $(".Main_chat__message-form__form-box__send-box").attr("disabled", false);
+    .done(function(messages) {
+      if (messages.length !== 0) {
+        let insertHTML = '';
+        $.each(messages, function(i, message) {
+          insertHTML += buildHTML(message)
+        });
+        $(".Main_chat__message-list").append(insertHTML);
+        $(".Main_chat__message-list").animate({ scrollTop: $(".Main_chat__message-list")[0].scrollHeight});
+      }
     })
     .fail(function() {
-      alert("メッセージ送信に失敗しました");
+      alert('error');
     });
-  });
+  };
+  setInterval(reloadMessages, 7000);
 });
